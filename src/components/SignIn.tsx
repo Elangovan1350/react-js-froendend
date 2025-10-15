@@ -30,11 +30,11 @@ const SignIn = () => {
     <div>
       <h2>Sign In</h2>
       <form onSubmit={handleSubmit(signInData)}>
-        <label htmlFor="email">Email:</label>
-        <input type="email" id="email" {...register("email")} />
+        <label htmlFor="email1">Email:</label>
+        <input type="email" id="email1" {...register("email")} />
         {errors.email && <span>{errors.email.message}</span>}
-        <label htmlFor="password">Password:</label>
-        <input type="password" id="password" {...register("password")} />
+        <label htmlFor="password1">Password:</label>
+        <input type="password" id="password1" {...register("password")} />
         {errors.password && <span>{errors.password.message}</span>}
         <button type="submit">Sign In</button>
       </form>
