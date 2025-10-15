@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUp } from "./lib/auth";
+import SignIn from "./components/SignIn";
 
 const schema = z.object({
   name: z.string().min(2, "Name should be at least 2 characters long"),
@@ -60,6 +61,8 @@ function App() {
           <button type="submit">Sign Up</button>
         </form>
       </div>
+      <hr />
+      <SignIn />
     </div>
   );
 }
