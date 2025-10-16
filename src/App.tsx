@@ -4,6 +4,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUp } from "./lib/auth";
 import SignIn from "./components/SignIn";
+import TodoList from "./components/TodoList";
 
 const schema = z.object({
   name: z.string().min(2, "Name should be at least 2 characters long"),
@@ -63,6 +64,8 @@ function App() {
       </div>
       <hr />
       <SignIn />
+      <hr />
+      <TodoList />
     </div>
   );
 }
