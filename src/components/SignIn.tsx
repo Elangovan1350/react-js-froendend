@@ -4,6 +4,7 @@ import * as z from "zod";
 import { signIn } from "../lib/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSignOut } from "../store.ts/authStore";
 
 const schema = z.object({
   email: z.email("Invalid email address"),
@@ -16,6 +17,7 @@ const schema = z.object({
 const SignIn = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
+  const { turnSignFalse } = useSignOut();
   const {
     register,
     handleSubmit,
@@ -27,18 +29,16 @@ const SignIn = () => {
   const signInData = async (data: z.infer<typeof schema>) => {
     try {
       setLoading(true);
-      const { data: res, error } = await signIn.email({
+      await signIn.email({
         email: data.email,
         password: data.password,
         fetchOptions: {
           onSuccess: () => {
             navigate("/todos");
+            turnSignFalse();
           },
         },
       });
-
-      console.log("data=", res);
-      console.log("error=", error);
     } catch (err) {
       console.error(err);
     } finally {

@@ -4,6 +4,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { signUp } from "../lib/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSignOut } from "../store.ts/authStore";
 
 const schema = z.object({
   name: z.string().min(2, "Name should be at least 2 characters long"),
@@ -17,7 +18,7 @@ const schema = z.object({
 const SignUp = () => {
   const navidate = useNavigate();
   const [loading, setLoading] = useState(false);
-
+  const { turnSignFalse } = useSignOut();
   const {
     register,
     handleSubmit,
@@ -29,18 +30,17 @@ const SignUp = () => {
   const signUpData = async (data: z.infer<typeof schema>) => {
     try {
       setLoading(true);
-      const { data: res, error } = await signUp.email({
+      await signUp.email({
         email: data.email,
         name: data.name,
         password: data.password,
         fetchOptions: {
           onSuccess: () => {
             navidate("/todos");
+            turnSignFalse();
           },
         },
       });
-
-      console.log("data=", res, "error=", error);
     } catch (err) {
       console.error(err);
     } finally {
