@@ -1,19 +1,21 @@
-import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { signIn } from "../lib/auth";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signUp } from "../lib/auth";
 import { useState } from "react";
 
 const schema = z.object({
+  name: z.string().min(2, "Name should be at least 2 characters long"),
   email: z.email("Invalid email address"),
   password: z
     .string()
-    .min(8, "Password must be at least 8 characters")
+    .min(6, "Password should be at least 6 characters long")
     .max(100),
 });
 
-const SignIn = () => {
+const SignUp = () => {
   const [loading, setLoading] = useState(false);
+
   const {
     register,
     handleSubmit,
@@ -22,16 +24,16 @@ const SignIn = () => {
     resolver: zodResolver(schema),
   });
 
-  const signInData = async (data: z.infer<typeof schema>) => {
+  const signUpData = async (data: z.infer<typeof schema>) => {
     try {
       setLoading(true);
-      const { data: res, error } = await signIn.email({
+      const { data: res, error } = await signUp.email({
         email: data.email,
+        name: data.name,
         password: data.password,
       });
 
-      console.log("data=", res);
-      console.log("error=", error);
+      console.log("data=", res, "error=", error);
     } catch (err) {
       console.error(err);
     } finally {
@@ -43,28 +45,44 @@ const SignIn = () => {
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100 p-6">
       <div className="w-full max-w-md bg-white shadow-lg rounded-2xl p-8">
         <h2 className="text-2xl font-bold text-center text-gray-800 mb-6">
-          🔐 Sign In
+          ✨ Create an Account
         </h2>
 
-        <form
-          onSubmit={handleSubmit(signInData)}
-          className="space-y-5"
-          noValidate
-        >
-          {/* Email */}
+        <form onSubmit={handleSubmit(signUpData)} className="space-y-5">
+          {/* Name Field */}
           <div>
             <label
-              htmlFor="email1"
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700 mb-1"
+            >
+              Name
+            </label>
+            <input
+              {...register("name")}
+              id="name"
+              type="text"
+              placeholder="Your name"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+            />
+            {errors.name && (
+              <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
+            )}
+          </div>
+
+          {/* Email Field */}
+          <div>
+            <label
+              htmlFor="email"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
               Email
             </label>
             <input
-              type="email"
-              id="email1"
               {...register("email")}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              id="email"
+              type="email"
               placeholder="you@example.com"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             />
             {errors.email && (
               <p className="text-red-500 text-sm mt-1">
@@ -73,20 +91,20 @@ const SignIn = () => {
             )}
           </div>
 
-          {/* Password */}
+          {/* Password Field */}
           <div>
             <label
-              htmlFor="password1"
+              htmlFor="password"
               className="block text-sm font-medium text-gray-700 mb-1"
             >
               Password
             </label>
             <input
-              type="password"
-              id="password1"
               {...register("password")}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500"
+              id="password"
+              type="password"
               placeholder="••••••••"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
             />
             {errors.password && (
               <p className="text-red-500 text-sm mt-1">
@@ -99,19 +117,20 @@ const SignIn = () => {
           <button
             type="submit"
             disabled={loading}
-            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg shadow-sm transition-colors disabled:opacity-60"
+            className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2.5 rounded-lg shadow-sm transition-all disabled:opacity-60"
           >
-            {loading ? "Signing in..." : "Sign In"}
+            {loading ? "Creating account..." : "Sign Up"}
           </button>
         </form>
 
+        {/* Footer */}
         <p className="text-center text-sm text-gray-500 mt-4">
-          Don't have an account?{" "}
+          Already have an account?{" "}
           <a
-            href="/signup"
+            href="/signin"
             className="text-indigo-600 hover:text-indigo-700 font-medium"
           >
-            Sign Up
+            Sign In
           </a>
         </p>
       </div>
@@ -119,4 +138,4 @@ const SignIn = () => {
   );
 };
 
-export default SignIn;
+export default SignUp;
