@@ -12,6 +12,8 @@ const Navbar = () => {
       const { data } = await getSession();
       if (!data) {
         turnSignOut();
+      } else {
+        navigate("/todos");
       }
     })();
   }, []);
