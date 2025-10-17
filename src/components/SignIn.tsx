@@ -34,6 +34,7 @@ const SignIn = () => {
           onSuccess: () => {
             navigate("/todos");
           },
+          credentials: "include",
         },
       });
 
