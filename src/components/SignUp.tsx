@@ -37,7 +37,6 @@ const SignUp = () => {
           onSuccess: () => {
             navidate("/todos");
           },
-          credentials: "include",
         },
       });
 
