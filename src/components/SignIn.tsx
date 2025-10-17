@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { signIn } from "../lib/auth";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const schema = z.object({
   email: z.email("Invalid email address"),
@@ -13,12 +14,13 @@ const schema = z.object({
 });
 
 const SignIn = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<z.infer<typeof schema>>({
+  } = useForm({
     resolver: zodResolver(schema),
   });
 
@@ -28,6 +30,11 @@ const SignIn = () => {
       const { data: res, error } = await signIn.email({
         email: data.email,
         password: data.password,
+        fetchOptions: {
+          onSuccess: () => {
+            navigate("/todos");
+          },
+        },
       });
 
       console.log("data=", res);

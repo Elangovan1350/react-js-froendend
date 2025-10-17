@@ -3,21 +3,18 @@ import {
   Routes,
   Route,
   Navigate,
-  Link,
 } from "react-router-dom";
 import SignUp from "./components/SignUp";
 import SignIn from "./components/SignIn";
 import TodoList from "./components/TodoList";
+import Navbar from "./components/Navbar";
+import AddTodo from "./components/AddTodo";
 
 function App() {
   return (
     <Router>
-      {/* Navbar */}
-      <nav className="bg-white shadow p-4 flex justify-center gap-6 text-indigo-600 font-medium">
-        <Link to="/">Sign In</Link>
-        <Link to="/signup">Sign Up</Link>
-        <Link to="/todos">Todos</Link>
-      </nav>
+      {/* navbar */}
+      <Navbar />
 
       {/* Page Routes */}
       <Routes>
@@ -27,6 +24,7 @@ function App() {
         <Route path="/signin" element={<Navigate to="/" replace />} />{" "}
         {/* redirect /signin to home */}
         <Route path="/todos" element={<TodoList />} />
+        <Route path="/addtodo" element={<AddTodo />} />
         {/* fallback for unknown paths */}
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

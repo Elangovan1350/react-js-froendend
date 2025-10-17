@@ -3,6 +3,7 @@ import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUp } from "../lib/auth";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const schema = z.object({
   name: z.string().min(2, "Name should be at least 2 characters long"),
@@ -14,6 +15,7 @@ const schema = z.object({
 });
 
 const SignUp = () => {
+  const navidate = useNavigate();
   const [loading, setLoading] = useState(false);
 
   const {
@@ -31,6 +33,11 @@ const SignUp = () => {
         email: data.email,
         name: data.name,
         password: data.password,
+        fetchOptions: {
+          onSuccess: () => {
+            navidate("/todos");
+          },
+        },
       });
 
       console.log("data=", res, "error=", error);

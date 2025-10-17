@@ -1,5 +1,8 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { getSession } from "../lib/auth";
+
+import { useNavigate } from "react-router-dom";
 
 export interface UserDataI {
   name: string;
@@ -13,17 +16,26 @@ export interface Post {
 }
 
 const TodoList = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState<UserDataI | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+
   const getTodoData = async () => {
+    const { data, error } = await getSession();
+    if (!data) {
+      navigate("/");
+    }
+
     try {
       const todoData = await axios.get(
-        `${import.meta.env.VITE_URL}posts/bx2u6yCzNUuLxHyyoISUsPu7WIM493LA`
+        `${import.meta.env.VITE_URL}posts/${data?.user.id}`
       );
       setUser(todoData.data);
-    } catch (error) {
-      console.log(error);
+    } catch (error1) {
+      console.log(error1);
+      console.log(error?.message);
+
       setError("Failed to load user data 😢");
     } finally {
       setLoading(false);
