@@ -90,7 +90,7 @@ const TodoList = () => {
                 {post.title}
               </h3>
               <p className="text-gray-600 mb-3">{post.content}</p>
-              <p className="text-xs text-gray-400">Post ID: {post.id}</p>
+              {/* <p className="text-xs text-gray-400">Post ID: {post.id}</p> */}
             </div>
           ))
         ) : (
