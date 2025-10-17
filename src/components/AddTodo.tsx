@@ -40,7 +40,7 @@ const AddTodo = () => {
 
   const onSubmit = async (data1: z.infer<typeof schema>) => {
     try {
-      const response = await axios.post(`${import.meta.env.VITE_URL}post`, {
+      const response = await axios.post(`${import.meta.env.VITE_URL}/post`, {
         title: data1.title,
         content: data1.content,
         userId,

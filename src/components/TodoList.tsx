@@ -29,7 +29,7 @@ const TodoList = () => {
 
     try {
       const todoData = await axios.get(
-        `${import.meta.env.VITE_URL}posts/${data?.user.id}`
+        `${import.meta.env.VITE_URL}/posts/${data?.user.id}`
       );
       setUser(todoData.data);
     } catch (error1) {
