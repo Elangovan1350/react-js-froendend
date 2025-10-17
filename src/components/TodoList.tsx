@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { useSession } from "../lib/auth";
+import { getSession } from "../lib/auth";
 
 import { useNavigate } from "react-router-dom";
 
@@ -20,9 +20,9 @@ const TodoList = () => {
   const [user, setUser] = useState<UserDataI | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const { data, error: error2 } = useSession();
 
   const getTodoData = async () => {
+    const { data, error } = await getSession();
     if (!data) {
       navigate("/");
     }
@@ -34,7 +34,7 @@ const TodoList = () => {
       setUser(todoData.data);
     } catch (error1) {
       console.log(error1);
-      console.log(error2?.message);
+      console.log(error?.message);
 
       setError("Failed to load user data 😢");
     } finally {
