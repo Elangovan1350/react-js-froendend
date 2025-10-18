@@ -9,12 +9,14 @@ import SignIn from "./components/SignIn";
 import TodoList from "./components/TodoList";
 import Navbar from "./components/Navbar";
 import AddTodo from "./components/AddTodo";
+import { Toaster } from "sonner";
 
 function App() {
   return (
     <Router>
       {/* navbar */}
       <Navbar />
+      <Toaster richColors position="top-right" />
 
       {/* Page Routes */}
       <Routes>

@@ -5,6 +5,7 @@ import { signUp } from "../lib/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSignOut } from "../store.ts/authStore";
+import { toast } from "sonner";
 
 const schema = z.object({
   name: z.string().min(2, "Name should be at least 2 characters long"),
@@ -38,11 +39,16 @@ const SignUp = () => {
           onSuccess: () => {
             navidate("/todos");
             turnSignFalse();
+            toast.success("User SignUp successfully");
+          },
+          onError: () => {
+            toast.error("User Failed To SignUp ");
           },
         },
       });
     } catch (err) {
       console.error(err);
+      toast.error("User Failed To SignUp ");
     } finally {
       setLoading(false);
     }

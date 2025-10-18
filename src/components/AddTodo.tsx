@@ -5,6 +5,7 @@ import { getSession } from "../lib/auth";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 const schema = z.object({
   title: z.string().min(1, "Title is required"),
@@ -48,10 +49,10 @@ const AddTodo = () => {
 
       console.log("Todo added:", response.data);
       reset(); // clear form
-      alert("✅ Todo added successfully!");
+      toast.success("✅ Todo added successfully!");
     } catch (error) {
       console.error("Error adding todo:", error);
-      alert("❌ Failed to add todo!");
+      toast.error(" Todo Failed To Add!");
     }
   };
 

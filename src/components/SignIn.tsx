@@ -5,6 +5,7 @@ import { signIn } from "../lib/auth";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSignOut } from "../store.ts/authStore";
+import { toast } from "sonner";
 
 const schema = z.object({
   email: z.email("Invalid email address"),
@@ -36,6 +37,10 @@ const SignIn = () => {
           onSuccess: () => {
             navigate("/todos");
             turnSignFalse();
+            toast.success("User SignIn Successfully");
+          },
+          onError: () => {
+            toast.error("User Failed To SignIn ");
           },
         },
       });

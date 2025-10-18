@@ -2,6 +2,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { getSession, signOut } from "../lib/auth";
 import { useSignOut } from "../store.ts/authStore";
 import { useEffect } from "react";
+import { toast } from "sonner";
 
 const Navbar = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const Navbar = () => {
         onSuccess: () => {
           navigate("/");
           turnSignOut();
+          toast.success("USer Successfully SignOut");
         },
       },
     });
