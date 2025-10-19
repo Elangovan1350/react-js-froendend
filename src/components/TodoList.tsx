@@ -14,6 +14,8 @@ export interface Post {
   title: string;
   content: string;
   id: string;
+  published: boolean;
+  createdAt: string;
 }
 
 const TodoList = () => {
@@ -88,12 +90,39 @@ const TodoList = () => {
               key={post.id}
               className="bg-white rounded-xl shadow hover:shadow-lg transition-shadow duration-200 p-5 border border-gray-100"
             >
+              <p className="text-[12px] font-semibold">
+                {new Date(post.createdAt).toLocaleString("en-IN", {
+                  timeZone: "Asia/Kolkata",
+                })}
+              </p>
               <h3 className="text-lg font-semibold text-gray-800 mb-2">
                 {post.title}
               </h3>
-              <p className="text-gray-600 mb-3">{post.content}</p>
+              <p
+                className={`${
+                  post.published ? "line-through" : ""
+                } text-gray-600 mb-3`}
+              >
+                {post.content}
+              </p>
               <div className="flex gap-2">
-                <button className="bg-blue-500  hover:bg-red-600 text-white px-3 py-1 rounded transition-colors">
+                <button
+                  onClick={async () => {
+                    try {
+                      const updateDone = await axios.put(
+                        `${import.meta.env.VITE_URL}/done/${post.id}`
+                      );
+                      if (updateDone.status === 200) {
+                        getTodoData();
+                      } else {
+                        toast.error("failed to update done");
+                      }
+                    } catch (error) {
+                      console.log(error);
+                    }
+                  }}
+                  className="bg-blue-500  hover:bg-blue-600 text-white px-3 py-1 rounded transition-colors"
+                >
                   Done
                 </button>
                 <button
