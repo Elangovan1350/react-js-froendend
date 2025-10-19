@@ -16,7 +16,7 @@ function App() {
     <Router>
       {/* navbar */}
       <Navbar />
-      <Toaster richColors position="top-right" />
+      <Toaster richColors position="top-right" duration={2000} />
 
       {/* Page Routes */}
       <Routes>

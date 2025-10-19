@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { getSession } from "../lib/auth";
 
 import { useNavigate } from "react-router-dom";
+import { toast } from "sonner";
 
 export interface UserDataI {
   name: string;
@@ -25,6 +26,7 @@ const TodoList = () => {
     const { data, error } = await getSession();
     if (!data) {
       navigate("/");
+      return;
     }
 
     try {
@@ -34,7 +36,7 @@ const TodoList = () => {
       setUser(todoData.data);
     } catch (error1) {
       console.log(error1);
-      console.log(error?.message);
+      console.log(error);
 
       setError("Failed to load user data 😢");
     } finally {
@@ -75,7 +77,7 @@ const TodoList = () => {
         <h2 className="text-2xl font-bold text-gray-900 mb-2">
           👋 Welcome, {user.name}
         </h2>
-        <p className="text-gray-600">Here are your latest posts</p>
+        <p className="text-gray-600">Here are your latest todos</p>
       </div>
 
       {/* Posts Grid */}
@@ -90,6 +92,33 @@ const TodoList = () => {
                 {post.title}
               </h3>
               <p className="text-gray-600 mb-3">{post.content}</p>
+              <div className="flex gap-2">
+                <button className="bg-blue-500  hover:bg-red-600 text-white px-3 py-1 rounded transition-colors">
+                  Done
+                </button>
+                <button
+                  onClick={async () => {
+                    try {
+                      const todoDElete = await axios.delete(
+                        `${import.meta.env.VITE_URL}/deletePost/${post.id}`
+                      );
+                      if (todoDElete.status === 200) {
+                        toast.success("Deleted Todo Successfully");
+                        getTodoData();
+                      } else toast.error("Failed To Delete Todo");
+                    } catch (error) {
+                      console.log(error);
+                      toast.error(
+                        "Something Went Wrong While Deleting Try Again"
+                      );
+                    }
+                  }}
+                  className="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded transition-colors"
+                >
+                  Delete
+                </button>
+              </div>
+
               {/* <p className="text-xs text-gray-400">Post ID: {post.id}</p> */}
             </div>
           ))

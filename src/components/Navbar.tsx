@@ -1,12 +1,13 @@
 import { Link, useNavigate } from "react-router-dom";
 import { getSession, signOut } from "../lib/auth";
 import { useSignOut } from "../store.ts/authStore";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const { isSignOut, turnSignOut } = useSignOut();
+  const [signOutText, setSignOutText] = useState<string>("SignOut");
 
   useEffect(() => {
     (async () => {
@@ -20,6 +21,7 @@ const Navbar = () => {
   }, []);
 
   const handleSignOut = async () => {
+    setSignOutText("SignOut...");
     await signOut({
       fetchOptions: {
         onSuccess: () => {
@@ -29,10 +31,12 @@ const Navbar = () => {
         },
       },
     });
+    setSignOutText("SignOut");
   };
 
   return (
     <nav className="bg-indigo-600 text-white p-4 flex justify-center gap-6">
+      {}
       <Link
         to="/"
         className="hover:bg-indigo-700 px-3 py-1 rounded transition-colors"
@@ -65,7 +69,7 @@ const Navbar = () => {
           isSignOut ? "bg-red-500/30" : "bg-red-500"
         }  px-3 py-1 rounded transition-colors disabled:opacity-60`}
       >
-        {isSignOut ? "Sign out" : "Sign Out"}
+        {signOutText}
       </button>
     </nav>
   );

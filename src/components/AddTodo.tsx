@@ -31,6 +31,7 @@ const AddTodo = () => {
       const { data, error } = await getSession();
       if (!data) {
         navigate("/");
+        return;
       } else if (error) {
         console.error("Session error:", error);
       } else if (data?.user?.id) {
